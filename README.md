@@ -64,10 +64,44 @@ First, add your backend server URL and token endpoint as described above:
 const BACKEND_URL = "https://example.com/api/";
 
 /*
-Entered url should NOT have a "/" at the beginning.
-Backend url and token endpoint are merged in the code so the token endpoint will be https://api.example.com/getNewAccessToken
+ * Entered url should NOT have a "/" at the beginning.
+ * Backend url and token endpoint are merged in the code,
+ * so the token endpoint will be https://api.example.com/getNewAccessToken
  */
 const TOKEN_ENDPOINT = "getNewAccessToken";
+```
+
+You can add an identifier value for backend functions. By default, the requester includes a UserId prop, but this prop can be customized or renamed to suit your needs:
+
+```typescript
+export class Requester {
+  private baseURL: string = BACKEND_URL;
+  private tokenEndpoint: string = TOKEN_ENDPOINT;
+  private endpoint: { route: string; controller: string };
+  private method: string;
+  private headers?: Record<string, string>;
+  private accessToken?: string;
+  private userId?: string; // You can customize or rename this to suit your needs
+  private payload: object;
+  //...
+}
+```
+
+You can add custom data for the token renewal process. By default, the requester sends the UserId value mentioned above.
+
+```typescript
+private async refresh(): Promise<string> {
+  try {
+    const requestUrl = this.baseURL + this.tokenEndpoint;
+    const axiosConfig: AxiosRequestConfig = {
+      url: requestUrl,
+      method: methods.post,
+      headers: { withCredentials: true },
+      data: { userId: this.userId }, // You can customize this part
+    };
+  //...
+  }
+}
 ```
 
 To check if the access token is expired, you can add a custom condition for your server's response. By default, the condition is as follows:
