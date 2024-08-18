@@ -9,10 +9,32 @@ An http requester with automatic access token renewal function.
 - The requester initializes an Axios instance first and passes the provided props to that Axios instance's config.
 - There are two values you need to set before using the requester: **baseURL**, **tokenEndpoint**.
 
+  ```typescript
+  const BACKEND_URL = "enter your own url here with '/' at the end";
+  const TOKEN_ENDPOINT =
+    "enter your own token endpoint here without '/' at the beginning";
+
+  export class Requester {
+    private baseURL: string = BACKEND_URL;
+    private tokenEndpoint: string = TOKEN_ENDPOINT;
+    //...
+  }
+  ```
+
   - **baseURL**: This is the base URL of your backend server. It should end with "/". For example: `https://example.com/api/`.
   - **tokenEndpoint**: This is the endpoint where we send a request to get a new access token. It should NOT start with "/". For example, if you set this value to `getNewAccessToken`, the requester sends a request to `https://example.com/api/getNewAccessToken`.
 
 - There are three required props: **method**, **endpoint** and **payload**.
+
+  ```typescript
+  export class Requester {
+    //...
+    private endpoint: { route: string; controller: string };
+    private method: string;
+    private payload: object;
+    //...
+  }
+  ```
 
   - **method**: This value should be the request method (POST, GET, PATCH, etc.). This value can be selected from the methods enum present at the end of the file to ensure consistency.
   - **payload**: Payload is the data we will send to the backend server.
