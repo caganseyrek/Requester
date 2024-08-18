@@ -106,7 +106,6 @@ export enum controllers {
 Lastly, you can add a custom error message in the `send` function:
 
 ```typescript
-console.error(error);
 throw new Error("An error ocurred");
 ```
 
