@@ -1,6 +1,6 @@
 # Requester
 
-An http requester with automatic access token renewal function.
+A custom and flexible http requester with automatic access token renewal function.
 
 - This requester uses an access token as a value and a refresh token stored as a cookie.
 
