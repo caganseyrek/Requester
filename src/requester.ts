@@ -11,7 +11,7 @@ interface RequesterConfig {
   method: string;
   headers?: Record<string, string>;
   accessToken?: string;
-  userId?: string;
+  identifier?: string;
   payload: object;
 }
 
@@ -25,10 +25,10 @@ export class Requester {
   private method: string;
   private headers?: Record<string, string>;
   private accessToken?: string;
-  private userId?: string;
   private payload: object;
+  private identifier?: string;
 
-  constructor({ endpoint, method, headers, accessToken, userId, payload }: RequesterConfig) {
+  constructor({ endpoint, method, headers, accessToken, payload, identifier }: RequesterConfig) {
     this.endpoint = endpoint;
     this.method = method;
     this.accessToken = accessToken;
@@ -37,8 +37,8 @@ export class Requester {
       ...(accessToken && { Authorization: `Bearer ${this.accessToken}` }),
       ...headers,
     };
-    this.userId = userId;
     this.payload = payload;
+    this.identifier = identifier;
   }
 
   async send<T>(): Promise<T> {
@@ -76,7 +76,7 @@ export class Requester {
         url: requestUrl,
         method: methods.post,
         headers: { withCredentials: true },
-        data: { userId: this.userId },
+        data: { id: this.identifier },
       };
       const response = await axios(axiosConfig);
       if (response.status === 200) {

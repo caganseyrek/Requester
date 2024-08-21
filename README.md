@@ -71,7 +71,7 @@ const BACKEND_URL = "https://example.com/api/";
 const TOKEN_ENDPOINT = "getNewAccessToken";
 ```
 
-You can add an identifier value for backend functions. By default, the requester includes a UserId prop, but this prop can be customized or renamed to suit your needs:
+You can add an identifier value for backend functions. By default, the requester includes a identifier prop, but this prop can be customized or renamed to suit your needs:
 
 ```typescript
 export class Requester {
@@ -81,13 +81,13 @@ export class Requester {
   private method: string;
   private headers?: Record<string, string>;
   private accessToken?: string;
-  private userId?: string; // You can customize or rename this to suit your needs
   private payload: object;
+  private identifier?: string; // You can customize or rename this to suit your needs
   //...
 }
 ```
 
-You can add custom data for the token renewal process. By default, the requester sends the UserId value mentioned above.
+You can add custom data for the token renewal process. By default, the requester sends the identifier value mentioned above.
 
 ```typescript
 private async refresh(): Promise<string> {
@@ -97,7 +97,7 @@ private async refresh(): Promise<string> {
       url: requestUrl,
       method: methods.post,
       headers: { withCredentials: true },
-      data: { userId: this.userId }, // You can customize this part
+      data: { identifier: this.identifier }, // You can customize this part
     };
   //...
   }
