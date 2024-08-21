@@ -152,7 +152,7 @@ The `send` function requires two types: one for the request and one for the resp
 ```typescript
 function fetchSomeData(someData: object) {
   try {
-    return new Requester({
+    const response = new Requester({
       method: methods.post,
       userId: "123",
       endpoint: {
