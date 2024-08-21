@@ -11,8 +11,7 @@ A custom and flexible HTTP requester that uses [Axios](https://axios-http.com/) 
 
   ```typescript
   const BACKEND_URL = "enter your own url here with '/' at the end";
-  const TOKEN_ENDPOINT =
-    "enter your own token endpoint here without '/' at the beginning";
+  const TOKEN_ENDPOINT = "enter your own token endpoint here without '/' at the beginning";
 
   export class Requester {
     private baseURL: string = BACKEND_URL;
@@ -107,10 +106,8 @@ private async refresh(): Promise<string> {
 To check if the access token is expired, you can add a custom condition for your server's response. By default, the condition is as follows:
 
 ```typescript
-if (
-  error.response?.status === 401 &&
-  error.response.data.message === "Expired Token"
-) {
+if (error.response?.status === 401 &&
+    error.response.data.message === "Expired Token") {
   //...
 }
 ```

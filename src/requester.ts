@@ -1,22 +1,22 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-interface endpointProps {
+interface EndpointProps {
   route: string;
   controller: string;
 }
 
 interface RequesterConfig {
   baseURL?: string;
-  endpoint: endpointProps;
+  endpoint: EndpointProps;
   method: string;
   headers?: Record<string, string>;
   accessToken?: string;
-  identifier?: string;
   payload: object;
+  identifier?: string;
 }
 
-const BACKEND_URL = "enter your own url here with '/' at the end";
-const TOKEN_ENDPOINT = "enter your own token endpoint here without '/' at the beginning";
+const BACKEND_URL = "enter your own url here WITH '/' at the end";
+const TOKEN_ENDPOINT = "enter your own token endpoint here WITHOUT '/' at the beginning";
 
 export class Requester {
   private baseURL: string = BACKEND_URL;
@@ -95,12 +95,15 @@ export enum methods {
   post = "POST",
   patch = "PATCH",
   delete = "DELETE",
+  //...
 }
 
 export enum routes {
   route = "route"
+  //...
 }
 
 export enum controllers {
   action = "action"
+  //...
 }
