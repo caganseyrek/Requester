@@ -41,7 +41,7 @@ export class Requester {
     this.identifier = identifier;
   }
 
-  async send<T>(): Promise<T> {
+  async send<TRequest, TResponse>(): Promise<TResponse> {
     const requestUrl = this.baseURL + this.endpoint.route + "/" + this.endpoint.controller;
     const axiosConfig: AxiosRequestConfig = {
       url: requestUrl,
@@ -50,15 +50,15 @@ export class Requester {
       data: this.payload,
     };
     try {
-      const response = await axios<T>(axiosConfig);
-      return response.data as T;
-    } catch (error) {
+      const response = await axios<TRequest>(axiosConfig);
+      return response.data as TResponse;
+    } catch (error: any) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401 && error.response.data.message === "Expired Token") {
-          const getNewAccessToken = await this.refresh();
-          if (getNewAccessToken) {
-            this.headers = { ...this.headers, Authorization: `Bearer ${getNewAccessToken}` };
-            return this.send<T>();
+          const newAccessToken = await this.refresh();
+          if (newAccessToken) {
+            this.headers = { ...this.headers, Authorization: `Bearer ${newAccessToken}` };
+            return this.send<TRequest, TResponse>();
           }
         }
         console.error(error.response?.data || error.message);
