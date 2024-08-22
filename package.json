@@ -1,13 +1,13 @@
 {
 	"scripts": {
 		"compile": "tsc",
-		"minify": "uglifyjs ./dist/requester.js -c -m --output ./dist/requester.min.js"
+		"minify": "terser ./dist/requester.js -c -m --output ./dist/requester.min.js"
 	},
 	"dependencies": {
 		"axios": "^1.7.4",
 		"typescript": "^5.5.4"
 	},
 	"devDependencies": {
-		"uglify-js": "^3.19.2"
+		"terser": "^5.31.6"
 	}
 }
