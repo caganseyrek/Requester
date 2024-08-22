@@ -41,7 +41,7 @@ export class Requester {
     this.identifier = identifier;
   }
 
-  async send<TRequest, TResponse>(): Promise<TResponse> {
+  async send<TResponse>(): Promise<TResponse> {
     const requestUrl = this.baseURL + this.endpoint.route + "/" + this.endpoint.controller;
     const axiosConfig: AxiosRequestConfig = {
       url: requestUrl,
@@ -50,7 +50,7 @@ export class Requester {
       data: this.payload,
     };
     try {
-      const response = await axios<TRequest>(axiosConfig);
+      const response = await axios<TResponse>(axiosConfig);
       return response.data as TResponse;
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
@@ -58,7 +58,7 @@ export class Requester {
           const newAccessToken = await this.refresh();
           if (newAccessToken) {
             this.headers = { ...this.headers, Authorization: `Bearer ${newAccessToken}` };
-            return this.send<TRequest, TResponse>();
+            return this.send<TResponse>();
           }
         }
         console.error(error.response?.data || error.message);

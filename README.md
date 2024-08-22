@@ -145,7 +145,7 @@ throw new Error("An error ocurred");
 
 First, initialize the requester class, then provide the required and optional props, and invoke the `send` function.
 
-The `send` function requires two types: one for the request and one for the response.
+The `send` function requires a type for the response.
 
 ```typescript
 function fetchSomeData(someData: object) {
@@ -158,7 +158,7 @@ function fetchSomeData(someData: object) {
         controller: controllers.someController,
       },
       payload: someData,
-    }).send<CustomRequestTypes, CustomResponseTypes>(); // You can add custom types or interfaces here
+    }).send<CustomResponseType>(); // You can add custom types or interfaces here
 
     return response;
   } catch (error) {
