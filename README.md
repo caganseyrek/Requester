@@ -152,12 +152,12 @@ function fetchSomeData(someData: object) {
   try {
     const response = new Requester({
       method: methods.post,
-      userId: "123",
       endpoint: {
         route: routes.someRoute,
         controller: controllers.someController,
       },
       payload: someData,
+      identifier: "SomeIdNumberOrSomething",
     }).send<CustomResponseType>(); // You can add custom types or interfaces here
 
     return response;
