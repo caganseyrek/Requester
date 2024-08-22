@@ -1,8 +1,7 @@
 {
 	"scripts": {
 		"compile": "tsc",
-		"minify:ts": "uglifyjs ./src/requester.ts -c -m --output ./src/requester.min.ts",
-		"minify:js": "uglifyjs ./dist/requester.js -c -m --output ./dist/requester.min.js"
+		"minify": "uglifyjs ./dist/requester.js -c -m --output ./dist/requester.min.js"
 	},
 	"dependencies": {
 		"axios": "^1.7.4",
