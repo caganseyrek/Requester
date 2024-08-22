@@ -71,7 +71,7 @@ const BACKEND_URL = "https://example.com/api/";
 const TOKEN_ENDPOINT = "getNewAccessToken";
 ```
 
-You can add an identifier value for backend functions. By default, the requester includes a identifier prop, but this prop can be customized or renamed to suit your needs:
+You can add an identifier value for backend functions. By default, the requester includes a prop named identifier, but this prop can be customized or renamed to suit your needs:
 
 ```typescript
 export class Requester {
