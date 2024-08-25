@@ -14,7 +14,7 @@ A custom and flexible HTTP requester that uses [Axios](https://axios-http.com/) 
   const TOKEN_ENDPOINT = "enter your own token endpoint here without '/' at the beginning";
 
   export class Requester {
-    private baseURL: string = BACKEND_URL;
+    private baseURL: string;
     private tokenEndpoint: string = TOKEN_ENDPOINT;
     //...
   }
@@ -75,7 +75,7 @@ You can add an identifier value for backend functions. By default, the requester
 
 ```typescript
 export class Requester {
-  private baseURL: string = BACKEND_URL;
+  private baseURL: string;
   private tokenEndpoint: string = TOKEN_ENDPOINT;
   private endpoint: { route: string; controller: string };
   private method: string;
@@ -85,6 +85,17 @@ export class Requester {
   private identifier?: string; // You can customize or rename this to suit your needs
   //...
 }
+```
+
+You can add a query string to the request. For example, if you pass `id=123` as a query parameter to the requester, it will send the request to `https://example.com/api/exampleRoute/exampleController?id=123.`
+
+```typescript
+  constructor({ endpoint, method, headers, accessToken, payload, query, identifier }: RequesterConfig) {
+    //...
+    this.query = query;
+    this.baseURL  = BACKEND_URL + (query && `?${this.query}`)
+    //...
+  }
 ```
 
 You can add custom data for the token renewal process. By default, the requester sends the identifier value mentioned above.

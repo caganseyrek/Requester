@@ -11,6 +11,7 @@ interface RequesterConfig {
   method: string;
   headers?: Record<string, string>;
   accessToken?: string;
+  query?: string;
   payload: object;
   identifier?: string;
 }
@@ -19,16 +20,17 @@ const BACKEND_URL = "enter your own url here WITH '/' at the end";
 const TOKEN_ENDPOINT = "enter your own token endpoint here WITHOUT '/' at the beginning";
 
 export class Requester {
-  private baseURL: string = BACKEND_URL;
+  private baseURL: string;
   private tokenEndpoint: string = TOKEN_ENDPOINT;
   private endpoint: { route: string; controller: string };
   private method: string;
   private headers?: Record<string, string>;
   private accessToken?: string;
   private payload: object;
+  private query?: string;
   private identifier?: string;
 
-  constructor({ endpoint, method, headers, accessToken, payload, identifier }: RequesterConfig) {
+  constructor({ endpoint, method, headers, accessToken, payload, query, identifier }: RequesterConfig) {
     this.endpoint = endpoint;
     this.method = method;
     this.accessToken = accessToken;
@@ -37,6 +39,8 @@ export class Requester {
       ...(accessToken && { Authorization: `Bearer ${this.accessToken}` }),
       ...headers,
     };
+    this.query = query;
+    this.baseURL  = BACKEND_URL + (query && `?${this.query}`)
     this.payload = payload;
     this.identifier = identifier;
   }
@@ -56,10 +60,8 @@ export class Requester {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401 && error.response.data.message === "Expired Token") {
           const newAccessToken = await this.refresh();
-          if (newAccessToken) {
-            this.headers = { ...this.headers, Authorization: `Bearer ${newAccessToken}` };
-            return this.send<TResponse>();
-          }
+          if (newAccessToken) return this.send<TResponse>();
+          return null as TResponse;
         }
         console.error(error.response?.data || error.message);
         throw new Error(error.response?.data || error.message);
@@ -69,7 +71,7 @@ export class Requester {
     }
   }
 
-  private async refresh(): Promise<string> {
+  private async refresh(): Promise<string | null> {
     try {
       const requestUrl = this.baseURL + this.tokenEndpoint;
       const axiosConfig: AxiosRequestConfig = {
@@ -78,14 +80,15 @@ export class Requester {
         headers: { withCredentials: true },
         data: { id: this.identifier },
       };
-      const response = await axios(axiosConfig);
-      if (response.status === 200) {
-        return response.data.accessToken;
+      const newTokenResponse = await axios(axiosConfig);
+      if (newTokenResponse.status === 200) {
+        this.accessToken = newTokenResponse.data.accessToken;
+        return newTokenResponse.data.accessToken;
       };
-      return "";
+      return null;
     } catch (error) {
       console.error(error);
-      return "";
+      return null;
     }
   }
 }
